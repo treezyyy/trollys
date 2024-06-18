@@ -1,6 +1,7 @@
 package io.bootify.trollys.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,7 @@ public class Equipment {
 
     @ManyToOne
     @JoinColumn(name = "transport_vin", nullable = false)
+    @JsonBackReference // Обратная сторона отношения
     private Transport transport;
 
     @Column(nullable = false)

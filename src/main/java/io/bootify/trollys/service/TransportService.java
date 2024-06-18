@@ -20,7 +20,7 @@ public class TransportService {
 
     private final TransportRepository transportRepository;
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Transport create(TransportDTO dto){
         Transport transportet = TransportMapper.toEntity(dto);
         return transportRepository.save(transportet);

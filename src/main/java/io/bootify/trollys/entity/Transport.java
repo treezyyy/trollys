@@ -1,6 +1,7 @@
 package io.bootify.trollys.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,7 +31,8 @@ public class Transport {
     private String infoteh;
 
     // Используем новое поле для маппинга с Equipment
-    @OneToMany(mappedBy = "transport", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "transport", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Equipment> equipmentList = new ArrayList<>();
 
 }
