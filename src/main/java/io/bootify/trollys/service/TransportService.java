@@ -25,7 +25,14 @@ public class TransportService {
         Transport transportet = TransportMapper.toEntity(dto);
         return transportRepository.save(transportet);
     }
-
+    @Transactional
+    public String findByVin(String vin) {
+        Transport transport = transportRepository.findByVin(vin);
+        if (transport == null) {
+            throw new EntityNotFoundException("Transport not found with infoteh: " + vin);
+        }
+        return transport.getInfoteh();
+    }
     @Transactional
     public List<TransportDTO> readAll(){
         List<Transport> transportList = transportRepository.findAll();

@@ -20,6 +20,7 @@ public class EquipmentService {
 
     private final EquipmentRepository equipmentRepository;
 
+    @Transactional
     public List<EquipmentDTO> readAll() {
         List<Equipment> equipmentList = equipmentRepository.findAll();
         return equipmentList.stream()
@@ -28,13 +29,39 @@ public class EquipmentService {
     }
 
     // Создание единицы оборудования
+    @Transactional
+    public Equipment create(EquipmentDTO equipmentDTO) {
+        Equipment equipment = EquipmentMapper.toEntity(equipmentDTO);
+        //Equipment savedEquipment = equipmentRepository.save(equipment);
+        //return EquipmentMapper.toDTO(savedEquipment);
+        return equipmentRepository.save(equipment);
+
+    }
+    /*
     public EquipmentDTO saveEquipment(EquipmentDTO equipmentDTO) {
         Equipment equipment = EquipmentMapper.toEntity(equipmentDTO);
         Equipment savedEquipment = equipmentRepository.save(equipment);
         return EquipmentMapper.toDTO(savedEquipment);
     }
 
+     */
+
     // Обновление единицы оборудования
+/*
+    @Transactional
+    public Transport update(Long id, EquipmentDTO equipmentDTO) {
+        Equipment existingEquipment = equipmentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Equipment not found with id: " + id));
+
+        existingEquipment.setName_equipment(equipmentDTO.getNameEquipment());
+        existingEquipment.setSerial_number(equipmentDTO.getSerialNumber());
+        existingEquipment.setStatus(equipmentDTO.getStatus());
+
+        return equipmentRepository.save(existingEquipment).getTransport();
+    }
+
+ */
+    @Transactional
     public EquipmentDTO update(Long id, EquipmentDTO equipmentDTO) {
         Equipment existingEquipment = equipmentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Equipment not found with id: " + id));

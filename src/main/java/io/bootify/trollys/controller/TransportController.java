@@ -26,6 +26,11 @@ public class TransportController {
     public ResponseEntity<List<TransportDTO>> readAll(){
         return new ResponseEntity<>(transportService.readAll(), HttpStatus.OK);
     }
+//пример
+    @GetMapping("get_infoteh/{vin}")
+    public ResponseEntity<String> findByVin(@PathVariable String vin){
+        return new ResponseEntity<>(transportService.findByVin(vin), HttpStatus.OK);
+    }
 
     @PutMapping("/{vin}")
     public ResponseEntity<Transport> update(@PathVariable String vin, @RequestBody TransportDTO transp){
@@ -37,5 +42,4 @@ public class TransportController {
         transportService.delete(vin);
         return HttpStatus.OK;
     }
-
 }
