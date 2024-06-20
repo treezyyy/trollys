@@ -42,6 +42,8 @@ public class EquipmentService {
         Equipment equipment = EquipmentMapper.toEntity(equipmentDTO);
         Equipment savedEquipment = equipmentRepository.save(equipment);
         return EquipmentMapper.toDTO(savedEquipment);
+
+
     }
 
      */
