@@ -17,7 +17,6 @@ public class TransportController {
 
     private final TransportService transportService;
 
-
     @PostMapping("create_transport")
     public ResponseEntity<Transport> create(@RequestBody TransportDTO dto){
         return new ResponseEntity<>(transportService.create(dto), HttpStatus.OK);
@@ -27,7 +26,6 @@ public class TransportController {
     public ResponseEntity<List<TransportDTO>> readAll(){
         return new ResponseEntity<>(transportService.readAll(), HttpStatus.OK);
     }
-
 
     @PutMapping("/{vin}")
     public ResponseEntity<Transport> update(@PathVariable String vin, @RequestBody TransportDTO transp){

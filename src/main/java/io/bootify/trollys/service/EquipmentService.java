@@ -9,6 +9,7 @@ import io.bootify.trollys.repos.EquipmentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,11 +52,19 @@ public class EquipmentService {
     }
 
     // Удаление единицы оборудования
+    @Transactional
     public void delete(Long id) {
         Equipment equipmente = equipmentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Equipment not found with id: " + id));
         equipmentRepository.delete(equipmente);
     }
 
+
+    @Transactional
+    public void deleteByTransportVin(String transportVin) {
+        List<Equipment> equipmentList = equipmentRepository.findByTransportVin(transportVin);
+        System.out.println("Found " + equipmentList.size() + " equipment items for transport_vin: " + transportVin);
+        equipmentRepository.deleteAll(equipmentList);
+    }
 
 }
