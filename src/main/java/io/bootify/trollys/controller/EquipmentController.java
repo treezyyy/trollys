@@ -20,32 +20,44 @@ public class EquipmentController {
 
     private final EquipmentService equipmentService;
 
+    // Вывод всех едениц
     @GetMapping("get_equipment")
     public ResponseEntity<List<EquipmentDTO>> readAll(){
         return new ResponseEntity<>(equipmentService.readAll(), HttpStatus.OK);
     }
+
+    // Создание единицы оборудования
     @PostMapping("create_equipment")
     public ResponseEntity<Equipment> create(@RequestBody EquipmentDTO dto){
         return new ResponseEntity<>(equipmentService.create(dto), HttpStatus.OK);
     }
 
+    // Обновление единицы оборудования
+    @PutMapping("/{id}")
+    public ResponseEntity<Equipment> update(@PathVariable Long id, @RequestBody EquipmentDTO equipmentDTO) {
+       return new ResponseEntity<>(equipmentService.update(id, equipmentDTO),HttpStatus.OK);
+    }
 
-/*
+    // Удаление единицы оборудования|не рабоатет
+    @DeleteMapping("del/{id}")
+    public HttpStatus delete(@PathVariable Long id){
+        equipmentService.delete(id);
+        System.out.println(id);
+        return HttpStatus.OK;
+    }
+
+    //Удаление всех едениц по Vin|не рабоатет
     @DeleteMapping("/{vin}")
     public HttpStatus deleteByTransportVin(@PathVariable String vin){
         equipmentService.deleteByTransportVin(vin);
         return HttpStatus.OK;
     }
-*/
-    @PutMapping("/{id}")
-    public ResponseEntity<EquipmentDTO> update(@PathVariable Long id, @RequestBody EquipmentDTO equipmentDTO) {
-       return new ResponseEntity<>(equipmentService.update(id, equipmentDTO),HttpStatus.OK);
-        // EquipmentDTO updatedEquipment = equipmentService.update(id, equipmentDTO);
-        //return ResponseEntity.ok(updatedEquipment);
+
+    //Вывод всех едениц оборудования по Vin
+    @GetMapping("get_equipmentByVin/{vin}")
+    public ResponseEntity<List<EquipmentDTO>> findByTransportVin(@PathVariable String vin){
+        return new ResponseEntity<>(equipmentService.findByTransportVin(vin), HttpStatus.OK);
     }
-    @DeleteMapping("/{id}")
-    public HttpStatus delete(@PathVariable Long id){
-        equipmentService.delete(id);
-        return HttpStatus.OK;
-    }
+
+
 }
