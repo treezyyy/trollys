@@ -20,19 +20,7 @@ public class TransportService {
 
     private final TransportRepository transportRepository;
 
-    @Transactional
-    public Transport create(TransportDTO dto){
-        Transport transportet = TransportMapper.toEntity(dto);
-        return transportRepository.save(transportet);
-    }
-    @Transactional
-    public String findByVin(String vin) {
-        Transport transport = transportRepository.findByVin(vin);
-        if (transport == null) {
-            throw new EntityNotFoundException("Transport not found with infoteh: " + vin);
-        }
-        return transport.getInfoteh();
-    }
+    // Вывод всех едениц
     @Transactional
     public List<TransportDTO> readAll(){
         List<Transport> transportList = transportRepository.findAll();
@@ -40,6 +28,15 @@ public class TransportService {
                 .map(TransportMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    // Создание тренспорта
+    @Transactional
+    public Transport create(TransportDTO transportDTO){
+        Transport transportet = TransportMapper.toEntity(transportDTO);
+        return transportRepository.save(transportet);
+    }
+
+    // Обновление тренспорта
     @Transactional
     public Transport update(String vin, TransportDTO dto) {
         Transport existingTransport = transportRepository.findById(vin)
@@ -56,10 +53,23 @@ public class TransportService {
 
         return transportRepository.save(existingTransport);
     }
+
+    // Удаление тренспорта
     @Transactional
     public void delete(String vin) {
         Transport transports = transportRepository.findById(vin)
                 .orElseThrow(() -> new EntityNotFoundException("Transport not found with vin: " + vin));
         transportRepository.delete(transports);
     }
+
+    //Поиск  infoteh по Vin
+    @Transactional
+    public String findByVin(String vin) {
+        Transport transport = transportRepository.findByVin(vin);
+        if (transport == null) {
+            throw new EntityNotFoundException("Transport not found with infoteh: " + vin);
+        }
+        return transport.getInfoteh();
+    }
+
 }

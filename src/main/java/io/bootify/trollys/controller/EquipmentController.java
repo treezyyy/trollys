@@ -2,7 +2,9 @@ package io.bootify.trollys.controller;
 
 
 import io.bootify.trollys.dto.EquipmentDTO;
+import io.bootify.trollys.dto.TransportDTO;
 import io.bootify.trollys.entity.Equipment;
+import io.bootify.trollys.entity.Transport;
 import io.bootify.trollys.service.EquipmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,8 +37,6 @@ public class EquipmentController {
         return HttpStatus.OK;
     }
 */
-
-
     @PutMapping("/{id}")
     public ResponseEntity<EquipmentDTO> update(@PathVariable Long id, @RequestBody EquipmentDTO equipmentDTO) {
        return new ResponseEntity<>(equipmentService.update(id, equipmentDTO),HttpStatus.OK);

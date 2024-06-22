@@ -20,6 +20,7 @@ public class EquipmentService {
 
     private final EquipmentRepository equipmentRepository;
 
+    // Вывод всех едениц
     @Transactional
     public List<EquipmentDTO> readAll() {
         List<Equipment> equipmentList = equipmentRepository.findAll();
@@ -32,39 +33,12 @@ public class EquipmentService {
     @Transactional
     public Equipment create(EquipmentDTO equipmentDTO) {
         Equipment equipment = EquipmentMapper.toEntity(equipmentDTO);
-        //Equipment savedEquipment = equipmentRepository.save(equipment);
-        //return EquipmentMapper.toDTO(savedEquipment);
         return equipmentRepository.save(equipment);
-
     }
-    /*
-    public EquipmentDTO saveEquipment(EquipmentDTO equipmentDTO) {
-        Equipment equipment = EquipmentMapper.toEntity(equipmentDTO);
-        Equipment savedEquipment = equipmentRepository.save(equipment);
-        return EquipmentMapper.toDTO(savedEquipment);
-
-
-    }
-
-     */
 
     // Обновление единицы оборудования
-/*
     @Transactional
-    public Transport update(Long id, EquipmentDTO equipmentDTO) {
-        Equipment existingEquipment = equipmentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Equipment not found with id: " + id));
-
-        existingEquipment.setName_equipment(equipmentDTO.getNameEquipment());
-        existingEquipment.setSerial_number(equipmentDTO.getSerialNumber());
-        existingEquipment.setStatus(equipmentDTO.getStatus());
-
-        return equipmentRepository.save(existingEquipment).getTransport();
-    }
-
- */
-    @Transactional
-    public EquipmentDTO update(Long id, EquipmentDTO equipmentDTO) {
+    public Equipment update(Long id, EquipmentDTO equipmentDTO) {
         Equipment existingEquipment = equipmentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Equipment not found with id: " + id));
 
@@ -76,24 +50,43 @@ public class EquipmentService {
         existingEquipment.setSerial_number(equipmentDTO.getSerialNumber());
         existingEquipment.setStatus(equipmentDTO.getStatus());
 
-        Equipment updatedEquipment = equipmentRepository.save(existingEquipment);
-        return EquipmentMapper.toDTO(updatedEquipment);
+        return equipmentRepository.save(existingEquipment);
     }
 
-    // Удаление единицы оборудования
+    // Удаление единицы оборудования |не рабоатет
     @Transactional
     public void delete(Long id) {
-        Equipment equipmente = equipmentRepository.findById(id)
+        Equipment equipment = equipmentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Equipment not found with id: " + id));
-        equipmentRepository.delete(equipmente);
+        System.out.println(equipment.getId());
+        try {
+            equipmentRepository.delete(equipment);
+        }
+        catch (Exception ex){
+            System.out.println(ex.toString());
+        }
+
     }
 
-
+//Удаление всех едениц по Vin |не рабоатет
     @Transactional
     public void deleteByTransportVin(String transportVin) {
         List<Equipment> equipmentList = equipmentRepository.findByTransportVin(transportVin);
         System.out.println("Found " + equipmentList.size() + " equipment items for transport_vin: " + transportVin);
         equipmentRepository.deleteAll(equipmentList);
     }
+
+    //Вывод всех едениц оборудования по Vin
+    @Transactional
+    public  List<EquipmentDTO> findByTransportVin(String vin){
+        List<Equipment> equipmentList = equipmentRepository.findByTransportVin(vin);
+        return equipmentList.stream()
+                .map(EquipmentMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+
+
+
 
 }
