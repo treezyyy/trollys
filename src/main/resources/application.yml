@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/board
     username: postgres
-    password: 1234
+    password: admin
     hikari:
       connection-timeout: 30000
       maximum-pool-size: 10
@@ -17,3 +17,9 @@ spring:
             non_contextual_creation: true
         id:
           new_generator_mappings: true
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    cache: false
