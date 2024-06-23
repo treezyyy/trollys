@@ -20,5 +20,9 @@ public class TrollysApplication {
         model.addAttribute("message", "Hello, Thymeleaf with Bootstrap!");
         return "index";
     }
-
+    @GetMapping("/equipments/{vin}")
+    public String equipment(Model model) {
+        model.addAttribute("message", "Hello, Thymeleaf with Bootstrap!");
+        return "transport-details";
+    }
 }

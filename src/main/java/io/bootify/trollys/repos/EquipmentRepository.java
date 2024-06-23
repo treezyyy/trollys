@@ -12,6 +12,4 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
 
     List<Equipment> findByTransportVin(String transportVin);
 
-  //  public List<Equipment> findByVin(String vin);
-
 }

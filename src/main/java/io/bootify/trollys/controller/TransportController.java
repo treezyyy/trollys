@@ -17,7 +17,7 @@ public class TransportController {
 
     private final TransportService transportService;
 
-    // Вывод всех едениц
+        // Вывод всех единиц
     @GetMapping("get_transports")
     public ResponseEntity<List<TransportDTO>> readAll(){
         return new ResponseEntity<>(transportService.readAll(), HttpStatus.OK);

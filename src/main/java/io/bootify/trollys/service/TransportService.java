@@ -20,7 +20,7 @@ public class TransportService {
 
     private final TransportRepository transportRepository;
 
-    // Вывод всех едениц
+    // Вывод всех единиц
     @Transactional
     public List<TransportDTO> readAll(){
         List<Transport> transportList = transportRepository.findAll();
