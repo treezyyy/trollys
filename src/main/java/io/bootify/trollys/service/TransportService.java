@@ -29,11 +29,14 @@ public class TransportService {
                 .collect(Collectors.toList());
     }
 
-    // Создание тренспорта
+    // Создание транспорта с проверкой на уникальность VIN
     @Transactional
     public Transport create(TransportDTO transportDTO){
-        Transport transportet = TransportMapper.toEntity(transportDTO);
-        return transportRepository.save(transportet);
+        if (transportRepository.existsById(transportDTO.getVin())) {
+            throw new IllegalArgumentException("Transport with VIN " + transportDTO.getVin() + " already exists");
+        }
+        Transport transport = TransportMapper.toEntity(transportDTO);
+        return transportRepository.save(transport);
     }
 
     // Обновление тренспорта

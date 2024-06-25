@@ -20,7 +20,7 @@ public class EquipmentService {
 
     private final EquipmentRepository equipmentRepository;
 
-    // Вывод всех едениц
+    // Вывод всех единиц
     @Transactional
     public List<EquipmentDTO> readAll() {
         List<Equipment> equipmentList = equipmentRepository.findAll();
@@ -68,7 +68,7 @@ public class EquipmentService {
 
     }
 
-//Удаление всех едениц по Vin |не рабоатет
+    //Удаление всех единиц по Vin |не рабоатет
     @Transactional
     public void deleteByTransportVin(String transportVin) {
         List<Equipment> equipmentList = equipmentRepository.findByTransportVin(transportVin);
@@ -76,7 +76,7 @@ public class EquipmentService {
         equipmentRepository.deleteAll(equipmentList);
     }
 
-    //Вывод всех едениц оборудования по Vin
+    //Вывод всех единиц оборудования по Vin
     @Transactional
     public  List<EquipmentDTO> findByTransportVin(String vin){
         List<Equipment> equipmentList = equipmentRepository.findByTransportVin(vin);
@@ -84,9 +84,4 @@ public class EquipmentService {
                 .map(EquipmentMapper::toDTO)
                 .collect(Collectors.toList());
     }
-
-
-
-
-
 }
