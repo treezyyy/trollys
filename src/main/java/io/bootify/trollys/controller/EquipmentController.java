@@ -1,10 +1,7 @@
 package io.bootify.trollys.controller;
 
-
 import io.bootify.trollys.dto.EquipmentDTO;
-import io.bootify.trollys.dto.TransportDTO;
 import io.bootify.trollys.entity.Equipment;
-import io.bootify.trollys.entity.Transport;
 import io.bootify.trollys.service.EquipmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -38,25 +36,30 @@ public class EquipmentController {
         return new ResponseEntity<>(equipmentService.update(id, equipmentDTO),HttpStatus.OK);
     }
 
-    // Удаление единицы оборудования|не рабоатет
+    // Удаление единицы оборудования
     @DeleteMapping("del/{id}")
     public HttpStatus delete(@PathVariable Long id){
         equipmentService.delete(id);
-        System.out.println(id);
         return HttpStatus.OK;
     }
 
-    //Удаление всех единиц по Vin|не рабоатет
+    // Удаление всех единиц по Vin
     @DeleteMapping("/{vin}")
     public HttpStatus deleteByTransportVin(@PathVariable String vin){
         equipmentService.deleteByTransportVin(vin);
         return HttpStatus.OK;
     }
 
-    //Вывод всех единиц оборудования по Vin
+    // Вывод всех единиц оборудования по Vin
     @GetMapping("get_equipmentByVin/{vin}")
     public ResponseEntity<List<EquipmentDTO>> findByTransportVin(@PathVariable String vin){
         return new ResponseEntity<>(equipmentService.findByTransportVin(vin), HttpStatus.OK);
     }
 
+    // Обновление статуса единицы оборудования
+    @PutMapping("/update_status/{id}")
+    public ResponseEntity<Equipment> updateStatus(@PathVariable Long id, @RequestBody Map<String, String> request) {
+        String status = request.get("status");
+        return new ResponseEntity<>(equipmentService.updateStatus(id, status), HttpStatus.OK);
+    }
 }

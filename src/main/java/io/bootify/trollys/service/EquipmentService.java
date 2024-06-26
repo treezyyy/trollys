@@ -84,5 +84,13 @@ public class EquipmentService {
                 .map(EquipmentMapper::toDTO)
                 .collect(Collectors.toList());
     }
+    @Transactional
+    public Equipment updateStatus(Long id, String status) {
+        Equipment existingEquipment = equipmentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Equipment not found with id: " + id));
+
+        existingEquipment.setStatus(status);
+        return equipmentRepository.save(existingEquipment);
+    }
 
 }
