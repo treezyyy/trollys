@@ -24,10 +24,17 @@ public class TransportController {
     }
 
     // Создание тренспорта
+    // Создание транспорта с обработкой исключения на дублирование VIN
     @PostMapping("create_transport")
-    public ResponseEntity<Transport> create(@RequestBody TransportDTO dto){
-        return new ResponseEntity<>(transportService.create(dto), HttpStatus.OK);
+    public ResponseEntity<?> create(@RequestBody TransportDTO dto){
+        try {
+            Transport transport = transportService.create(dto);
+            return new ResponseEntity<>(transport, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
+
 
     // Обновление тренспорта
     @PutMapping("/{vin}")
