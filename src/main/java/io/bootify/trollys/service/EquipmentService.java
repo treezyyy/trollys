@@ -85,8 +85,4 @@ public class EquipmentService {
                 .collect(Collectors.toList());
     }
 
-
-
-
-
 }

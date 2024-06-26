@@ -1,41 +1,58 @@
 $(document).ready(function() {
-    // Загрузка транспортных средств при загрузке страницы
-    loadTransports(this);
+    var url = window.location.href;
+    const parts = url.split('/');
+    const lastPart = parts[parts.length - 1];
+    const lastNumber = parseInt(lastPart, 10);
 
-    // Обработчик события клика на ссылки VIN
-    $('#transports-table-body').on('click', '.vin-link', function(event) {
-        event.preventDefault();
-        var vin = $(this).data('vin');
-                console.log(vin);
-    });
+    if (!isNaN(lastNumber)) {
+        console.log(url);
+        loadEquipment(lastNumber);
+        $('#VINname').text('VIN:' + lastNumber);
+    } else {
+        console.error('Неправильный формат VIN в URL');
+    }
 });
 
-function loadTransports(doc) {
-        var vin = $(doc).data('vin');
-        console.log(vin);
- // Загружаем оборудование по VIN
-        $.get('/get_equipmentByVin/' + encodeURIComponent(vin), function(equipmentList) {
-            console.log('Полученное оборудование:', equipmentList); // Для отладки
-
-            // Здесь вы можете обработать полученное оборудование, например, отобразить его в модальном окне или другим способом.
-            alert('Список оборудования: ' + JSON.stringify(equipmentList));
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-            console.error('Ошибка при загрузке оборудования:', textStatus, errorThrown); // Обработка ошибок
-        });
-    $.get('/api/v1/transport/get_transports', function(data) {
-        console.log('Полученные данные:', data); // Для отладки
-        var transportsTableBody = $('#transports-table-body');
+function loadEquipment(vin) {
+    // Загружаем оборудование по VIN
+    $.get('/api/v1/equipment/get_equipmentByVin/' + vin, function(equipmentList) {
+        console.log('Полученное оборудование:', equipmentList); // Для отладки
+        var transportsTableBody = $('#equipment-details');
         transportsTableBody.empty();
 
-        data.forEach(function(transport) {
-            var row = '<tr>' +
-                        '<td><a href="#" class="vin-link" data-vin="' + transport.vin + '">' + transport.vin + '</a></td>' +
-                        '<td>' + transport.garageNumber + '</td>' +
-                        '<td>' + transport.infoteh + '</td>' +
-                      '</tr>';
-            transportsTableBody.append(row);
-        });
+        if (Array.isArray(equipmentList) && equipmentList.length > 0) {
+            equipmentList.forEach(function(equipment) {
+                if (equipment && equipment.nameEquipment && equipment.serialNumber && equipment.status) {
+                    var row = '<tr>' +
+                                '<td>' + escapeHTML(equipment.nameEquipment) + '</td>' +
+                                '<td>' + escapeHTML(equipment.serialNumber) + '</td>' +
+                                '<td>' + escapeHTML(equipment.status) + '</td>' +
+                              '</tr>';
+                    transportsTableBody.append(row);
+                } else {
+                    console.error('Некорректные данные оборудования:', equipment);
+                }
+            });
+        } else {
+            console.error('Пустой или некорректный список оборудования');
+            transportsTableBody.append('<tr><td colspan="3">Нет доступного оборудования</td></tr>');
+        }
     }).fail(function(jqXHR, textStatus, errorThrown) {
-        console.error('Ошибка при загрузке транспортных средств:', textStatus, errorThrown); // Обработка ошибок
+        console.error('Ошибка при загрузке оборудования:', textStatus, errorThrown); // Обработка ошибок
+        $('#equipment-details').append('<tr><td colspan="3">Ошибка при загрузке данных</td></tr>');
+    });
+}
+
+// Функция для экранирования HTML
+function escapeHTML(str) {
+    return str.replace(/[&<>"']/g, function(match) {
+        const escape = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        };
+        return escape[match];
     });
 }

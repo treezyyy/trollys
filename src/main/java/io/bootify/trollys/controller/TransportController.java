@@ -17,13 +17,12 @@ public class TransportController {
 
     private final TransportService transportService;
 
-        // Вывод всех единиц
+    // Вывод всех единиц
     @GetMapping("get_transports")
     public ResponseEntity<List<TransportDTO>> readAll(){
         return new ResponseEntity<>(transportService.readAll(), HttpStatus.OK);
     }
 
-    // Создание тренспорта
     // Создание транспорта с обработкой исключения на дублирование VIN
     @PostMapping("create_transport")
     public ResponseEntity<?> create(@RequestBody TransportDTO dto){
@@ -34,7 +33,6 @@ public class TransportController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
 
     // Обновление тренспорта
     @PutMapping("/{vin}")
