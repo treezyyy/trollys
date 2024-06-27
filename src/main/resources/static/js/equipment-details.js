@@ -1,22 +1,21 @@
 $(document).ready(function() {
     var url = window.location.href;
     const parts = url.split('/');
-    const lastPart = parts[parts.length - 1];
-    const lastNumber = parseInt(lastPart, 10);
+    const vin = parts[parts.length - 1];
 
-    if (!isNaN(lastNumber)) {
+    if (vin) {
         console.log(url);
-        loadEquipment(lastNumber);
-        $('#VINname').text('VIN:' + lastNumber);
+        loadEquipment(vin);
+        $('#VINname').text('VIN: ' + vin);
+
+        // Обработка отправки формы
+        $('#equipment-form').off('submit').on('submit', function(event) {
+            event.preventDefault(); // Предотвратить отправку формы через браузер
+            addEquipment(vin);
+        });
     } else {
         console.error('Неправильный формат VIN в URL');
     }
-
-    // Обработка отправки формы
-    $('#equipment-form').off('submit').on('submit', function(event) {
-        event.preventDefault(); // Предотвратить отправку формы через браузер
-        addEquipment(lastNumber);
-    });
 });
 
 function loadEquipment(vin) {
