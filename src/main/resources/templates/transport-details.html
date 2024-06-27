@@ -10,18 +10,35 @@
 <body>
 <div layout:fragment="content">
     <h2 id="VINname">VIN:</h2>
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>Название</th>
-        <th>Серийный номер</th>
-        <th>Состояние</th>
-    </tr>
-    </thead>
-    <tbody id="equipment-details">
-    <!-- Rows will be appended here by JavaScript -->
-    </tbody>
-</table>
-</div>>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Серийный номер</th>
+            <th>Состояние</th>
+        </tr>
+        </thead>
+        <tbody id="equipment-details">
+        <!-- Rows will be appended here by JavaScript -->
+        </tbody>
+    </table>
+
+    <h2>Добавить оборудование</h2>
+    <form id="equipment-form">
+        <div>
+            <label for="nameEquipment">Название:</label>
+            <input type="text" id="nameEquipment" name="nameEquipment" required>
+        </div>
+        <div>
+            <label for="serialNumber">Серийный номер:</label>
+            <input type="text" id="serialNumber" name="serialNumber" required>
+        </div>
+        <div>
+            <label for="status">Состояние:</label>
+            <input type="text" id="status" name="status" required>
+        </div>
+        <button type="submit">Добавить</button>
+    </form>
+</div>
 </body>
 </html>

@@ -11,6 +11,12 @@ $(document).ready(function() {
     } else {
         console.error('Неправильный формат VIN в URL');
     }
+
+    // Обработка отправки формы
+    $('#equipment-form').off('submit').on('submit', function(event) {
+        event.preventDefault(); // Предотвратить отправку формы через браузер
+        addEquipment(lastNumber);
+    });
 });
 
 function loadEquipment(vin) {
@@ -47,6 +53,33 @@ function loadEquipment(vin) {
     }).fail(function(jqXHR, textStatus, errorThrown) {
         console.error('Ошибка при загрузке оборудования:', textStatus, errorThrown);
         $('#equipment-details').append('<tr><td colspan="3">Ошибка при загрузке данных</td></tr>');
+    });
+}
+
+function addEquipment(vin) {
+    var equipmentData = {
+        transport_vin: vin,
+        nameEquipment: $('#nameEquipment').val(),
+        serialNumber: $('#serialNumber').val(),
+        status: $('#status').val()
+    };
+
+    console.log('Отправка данных оборудования:', equipmentData); // Отладочная строка
+
+    $.ajax({
+        type: 'POST',
+        url: '/api/v1/equipment/create_equipment',
+        contentType: 'application/json',
+        data: JSON.stringify(equipmentData),
+        success: function(response) {
+            alert('Оборудование успешно добавлено');
+            loadEquipment(vin); // Перезагрузить таблицу оборудования
+            $('#equipment-form')[0].reset(); // Сбросить форму
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert('Ошибка при добавлении оборудования: ' + jqXHR.responseText);
+            console.error('Ошибка:', textStatus, errorThrown); // Отладочная строка
+        }
     });
 }
 

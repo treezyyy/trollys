@@ -35,7 +35,6 @@ public class EquipmentService {
         Equipment equipment = EquipmentMapper.toEntity(equipmentDTO);
         return equipmentRepository.save(equipment);
     }
-
     // Обновление единицы оборудования
     @Transactional
     public Equipment update(Long id, EquipmentDTO equipmentDTO) {
