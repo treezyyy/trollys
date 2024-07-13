@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  web:
+    image: openjdk:17-jdk-slim
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      DB_URL: jdbc:postgresql://db:5432/board
+      DB_USERNAME: postgres
+      DB_PASSWORD: admin
+    volumes:
+      - ./target/trollys-0.0.1-SNAPSHOT.jar:/app/app.jar
+    depends_on:
+      db:
+        condition: service_healthy
+    command: /bin/sh -c "java -jar /app/app.jar"
+
+  db:
+    image: postgres:13
+    container_name: local_postgres
+    environment:
+      POSTGRES_DB: board
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
